@@ -1,0 +1,10 @@
+[package]
+name = "desktop_overlay"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+sysinfo = "0.33"
+gtk4-layer-shell = "0.8.0"
+gtk = { version = "0.11.3", package = "gtk4", features = ["v4_22"] }
+winit = { version = "0.30.13", default-features = true }

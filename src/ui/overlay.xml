@@ -1,0 +1,795 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <object class="GtkApplicationWindow" id="main_window">
+    <style>
+        <class name="vbox"/>
+    </style>
+    <property name="decorated">false</property>
+    <property name="resizable">false</property>
+    <property name="can-focus">false</property>
+    <child>
+      <object class="GtkBox" id="root">
+        <property name="orientation">vertical</property>
+        <property name="spacing">4</property>
+        <property name="margin-start">8</property>
+        <property name="margin-end">8</property>
+        <property name="margin-top">8</property>
+        <property name="margin-bottom">8</property>
+
+        <!-- SYSTEM -->
+        <child>
+          <object class="GtkLabel">
+            <property name="label"> SYSTEM </property>
+            <property name="halign">start</property>
+            <style><class name="section-header"/></style>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">Uptime: </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_uptime">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">CPU Freq: </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_cpu_freq">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">RAM Usage: </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_ram">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">Swap Usage: </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_swap">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">CPU Usage: </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_cpu_usage">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">Processes: </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_processes">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">Host: </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_host">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkSeparator">
+            <property name="orientation">horizontal</property>
+          </object>
+        </child>
+
+        <!-- FILESYSTEMS -->
+        <child>
+          <object class="GtkLabel">
+            <property name="label"> FILESYSTEMS </property>
+            <property name="halign">start</property>
+            <style><class name="section-header"/></style>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">/ </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_disk_root">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">/mnt/data </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_disk_mnt_data">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">/mnt/warehouse</property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_disk_mnt_warehouse">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkSeparator">
+            <property name="orientation">horizontal</property>
+          </object>
+        </child>
+
+        <!-- NETWORKING -->
+        <child>
+          <object class="GtkLabel">
+            <property name="label"> NETWORKING </property>
+            <property name="halign">start</property>
+            <style><class name="section-header"/></style>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">Up: </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_net_up">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">Down: </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_net_down">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkSeparator">
+            <property name="orientation">horizontal</property>
+          </object>
+        </child>
+
+        <!-- GPU -->
+        <child>
+          <object class="GtkLabel">
+            <property name="label"> GPU </property>
+            <property name="halign">start</property>
+            <style><class name="section-header"/></style>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">Renderer: </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_gpu_renderer">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">GPU Usage: </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_gpu_usage">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">VRAM Usage: </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_vram">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">VRAM Busy: </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_vram_busy">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">GPU Clock: </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_gpu_clock">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkSeparator">
+            <property name="orientation">horizontal</property>
+          </object>
+        </child>
+
+        <!-- Temperature -->
+        <child>
+          <object class="GtkLabel">
+            <property name="label">— Temperature —</property>
+            <property name="halign">start</property>
+            <style><class name="section-header"/></style>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">Junction: </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_temp_junction">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">Die: </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_temp_die">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">Memory: </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_temp_memory">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkSeparator">
+            <property name="orientation">horizontal</property>
+          </object>
+        </child>
+
+        <!-- Power -->
+        <child>
+          <object class="GtkLabel">
+            <property name="label">— Power —</property>
+            <property name="halign">start</property>
+            <style><class name="section-header"/></style>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">Draw: </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_power_draw">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">Cap (TBP): </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_power_cap">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">Voltage: </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_voltage">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkSeparator">
+            <property name="orientation">horizontal</property>
+          </object>
+        </child>
+
+        <!-- Clocks -->
+        <child>
+          <object class="GtkLabel">
+            <property name="label">— Clocks —</property>
+            <property name="halign">start</property>
+            <style><class name="section-header"/></style>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">sclk: </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_sclk">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">mclk: </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_mclk">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">fclk: </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_fclk">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">socclk: </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_socclk">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkSeparator">
+            <property name="orientation">horizontal</property>
+          </object>
+        </child>
+
+        <!-- Misc -->
+        <child>
+          <object class="GtkLabel">
+            <property name="label">— Misc —</property>
+            <property name="halign">start</property>
+            <style><class name="section-header"/></style>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">Fan: </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_fan">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">PCIe: </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_pcie">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">State: </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_state">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">PState: </property>
+                <property name="halign">start</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="lbl_pstate">
+                <property name="label">—</property>
+                <property name="halign">end</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+          </object>
+        </child>
+
+        <child>
+          <object class="GtkSeparator">
+            <property name="orientation">horizontal</property>
+          </object>
+        </child>
+
+        <!-- ADD PRODUCT -->
+        <!-- <child>
+          <object class="GtkLabel">
+            <property name="label"> ADD PRODUCT </property>
+            <property name="halign">start</property>
+            <style><class name="section-header"/></style>
+          </object>
+        </child>
+        <child>
+          <object class="GtkEntry" id="entry_url">
+            <property name="placeholder-text">Paste product URL…</property>
+          </object>
+        </child> -->
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="label">Snow </property>
+                <property name="halign">start</property>
+                <property name="hexpand">true</property>
+                <style><class name="row-label"/></style>
+              </object>
+            </child>
+
+            <child>
+              <object class="GtkSwitch" id="snow_switch">
+                <property name="halign">end</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+
+    </child>
+  </object>
+</interface>
