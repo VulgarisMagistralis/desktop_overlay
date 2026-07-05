@@ -4,7 +4,7 @@ A lightweight, hardware-accelerated desktop overlay built with Rust and GTK4. It
 
 ## Demo
 
-![Project Demo](assets/overlay_small.webm)
+![Project Demo](assets/demo.webp)
 
 ## Features
 
