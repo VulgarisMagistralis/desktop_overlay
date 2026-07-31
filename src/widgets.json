@@ -1,0 +1,312 @@
+{
+  "widgets": [
+    {
+      "id": "read_uptime",
+      "method": "read_uptime",
+      "value_type": "String",
+      "label": "Uptime:",
+      "section": "SYSTEM",
+      "order": 0,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    },
+    {
+      "id": "read_cpu_freq",
+      "method": "read_cpu_freq",
+      "value_type": "String",
+      "label": "CPU Freq:",
+      "section": "SYSTEM",
+      "order": 1,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    },
+    {
+      "id": "read_ram",
+      "method": "read_ram",
+      "value_type": "String",
+      "label": "RAM Usage:",
+      "section": "SYSTEM",
+      "order": 2,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    },
+    {
+      "id": "read_swap",
+      "method": "read_swap",
+      "value_type": "String",
+      "label": "Swap Usage:",
+      "section": "SYSTEM",
+      "order": 3,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    },
+    {
+      "id": "read_cpu_usage",
+      "method": "read_cpu_usage",
+      "value_type": "String",
+      "label": "CPU Usage:",
+      "section": "SYSTEM",
+      "order": 4,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    },
+    {
+      "id": "read_processes_count",
+      "method": "read_processes_count",
+      "value_type": "String",
+      "label": "Processes:",
+      "section": "SYSTEM",
+      "order": 5,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    },
+    {
+      "id": "read_host",
+      "method": "read_host",
+      "value_type": "String",
+      "label": "Host:",
+      "section": "SYSTEM",
+      "order": 6,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    },
+    {
+      "id": "read_disks",
+      "method": "read_disks",
+      "value_type": "skip",
+      "label": "/",
+      "section": "FILESYSTEMS",
+      "order": 0,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    },
+    {
+      "id": "read_network_upload",
+      "method": "read_network_upload",
+      "value_type": "String",
+      "label": "Up:",
+      "section": "NETWORKING",
+      "order": 0,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    },
+    {
+      "id": "read_network_download",
+      "method": "read_network_download",
+      "value_type": "String",
+      "label": "Down:",
+      "section": "NETWORKING",
+      "order": 1,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    },
+    {
+      "id": "read_gpu_renderer",
+      "method": "read_gpu_renderer",
+      "value_type": "skip",
+      "label": "Renderer:",
+      "section": "GPU",
+      "order": 0,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    },
+    {
+      "id": "read_gpu_usage",
+      "method": "read_gpu_usage",
+      "value_type": "skip",
+      "label": "GPU Usage:",
+      "section": "GPU",
+      "order": 1,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    },
+    {
+      "id": "read_vram",
+      "method": "read_vram",
+      "value_type": "skip",
+      "label": "VRAM Usage:",
+      "section": "GPU",
+      "order": 2,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    },
+    {
+      "id": "read_vram_busy",
+      "method": "read_vram_busy",
+      "value_type": "skip",
+      "label": "VRAM Busy:",
+      "section": "GPU",
+      "order": 3,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    },
+    {
+      "id": "read_gpu_clock",
+      "method": "read_gpu_clock",
+      "value_type": "skip",
+      "label": "GPU Clock:",
+      "section": "GPU",
+      "order": 4,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    },
+    {
+      "id": "read_temp_junction",
+      "method": "read_temp_junction",
+      "value_type": "String",
+      "label": "Junction:",
+      "section": "Temperature",
+      "order": 0,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    },
+    {
+      "id": "read_temp_die",
+      "method": "read_temp_die",
+      "value_type": "String",
+      "label": "Die:",
+      "section": "Temperature",
+      "order": 1,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    },
+    {
+      "id": "read_temp_memory",
+      "method": "read_temp_memory",
+      "value_type": "String",
+      "label": "Memory:",
+      "section": "Temperature",
+      "order": 2,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    },
+    {
+      "id": "read_power_draw",
+      "method": "read_power_draw",
+      "value_type": "Option<String>",
+      "label": "Draw:",
+      "section": "Power",
+      "order": 0,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    },
+    {
+      "id": "read_voltage",
+      "method": "read_voltage",
+      "value_type": "Option<String>",
+      "label": "Voltage:",
+      "section": "Power",
+      "order": 2,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    },
+    {
+      "id": "read_shader_clock",
+      "method": "read_shader_clock",
+      "value_type": "String",
+      "label": "Shader Clock:",
+      "section": "Clocks",
+      "order": 0,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    },
+    {
+      "id": "read_memory_clock",
+      "method": "read_memory_clock",
+      "value_type": "String",
+      "label": "Memory Clock:",
+      "section": "Clocks",
+      "order": 1,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    },
+    {
+      "id": "read_fragment_clock",
+      "method": "read_fragment_clock",
+      "value_type": "String",
+      "label": "Fragment Clock:",
+      "section": "Clocks",
+      "order": 2,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    },
+    {
+      "id": "read_soc_clock",
+      "method": "read_soc_clock",
+      "value_type": "String",
+      "label": "SoC Clock:",
+      "section": "Clocks",
+      "order": 3,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    },
+    {
+      "id": "read_fan",
+      "method": "read_fan",
+      "value_type": "Option<String>",
+      "label": "Fan:",
+      "section": "Misc",
+      "order": 0,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    },
+    {
+      "id": "read_pcie_lane",
+      "method": "read_pcie_lane",
+      "value_type": "String",
+      "label": "PCIe:",
+      "section": "Misc",
+      "order": 1,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    },
+    {
+      "id": "read_power_state",
+      "method": "read_power_state",
+      "value_type": "String",
+      "label": "State:",
+      "section": "Misc",
+      "order": 2,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    },
+    {
+      "id": "read_performance_state",
+      "method": "read_performance_state",
+      "value_type": "String",
+      "label": "PState:",
+      "section": "Misc",
+      "order": 3,
+      "margin_from_x": 0,
+      "margin_from_y": 0,
+      "display": "0"
+    }
+  ]
+}

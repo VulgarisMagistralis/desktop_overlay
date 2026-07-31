@@ -1,120 +1,177 @@
-use gtk::cairo;
-use gtk::gdk::{Display, prelude::*};
-use gtk::glib::{self, timeout_add_seconds_local, ControlFlow, Propagation};
-use gtk::prelude::*;
-
-
+use crate::monitor;
+use crate::snowflake::SnowWindow;
+use crate::ui::{default_configs, window};
+use crate::ui::{extract_sections, WidgetRegistry};
+use gtk::glib::{timeout_add_local, ControlFlow};
 use std::cell::RefCell;
+use std::fs;
 use std::rc::Rc;
 
-use crate::snowflake;
-use crate::tick;
-use crate::ui::Labels;
-use crate::{monitor, ui};
-
-/// Central application state.
 pub struct App {
     pub window: gtk::ApplicationWindow,
+    pub registry: Rc<WidgetRegistry>,
     pub monitor_state: monitor::MonitorState,
-    pub labels: Labels,
-    pub backends: Vec<Box<dyn monitor::GpuBackend>>,
-    pub snow_win: Option<Rc<RefCell<snowflake::SnowWindow>>>,
-    pub tick_count: u64,
+    pub detach_lock: bool,
+    pub tick_id: Option<gtk::glib::source::SourceId>,
 }
 
-/// Fluent builder for constructing an `App`.
+#[derive(serde::Serialize, serde::Deserialize, Clone, Debug)]
+struct LayoutFile {
+    snow: bool,
+    detach_lock: bool,
+    widgets: Vec<crate::widget::DataWidgetConfig>,
+}
+
 pub struct AppBuilder {
     app: Rc<RefCell<App>>,
+    snow_switch: Option<gtk::Switch>,
+    detach_lock_switch: Option<gtk::Switch>,
+    registry: Option<Rc<WidgetRegistry>>,
 }
 
 impl AppBuilder {
-    /// Start building the overlay app.
     pub fn new() -> Self {
+        let dummy_window = gtk::ApplicationWindow::builder().build();
         Self {
             app: Rc::new(RefCell::new(App {
-                window: gtk::ApplicationWindow::builder().build(),
+                window: dummy_window,
+                registry: Rc::new(WidgetRegistry::empty()),
                 monitor_state: monitor::MonitorState::new(),
-                labels: Labels::default_empty(),
-                backends: Vec::new(),
-                snow_win: None,
-                tick_count: 0,
+                detach_lock: false,
+                tick_id: None,
             })),
+            snow_switch: None,
+            detach_lock_switch: None,
+            registry: None,
         }
     }
 
-    /// Load XML, create window, extract labels and button — all from ONE builder.
     pub fn setup_window(self, application: &gtk::Application) -> Self {
         let builder = gtk::Builder::from_string(include_str!("ui/overlay.xml"));
+        let window = window::create_window(application, &builder);
+        let sections_map = extract_sections(&builder);
 
-        // Extract window
-        let window = ui::window::create_window(application, &builder);
+        // Collect section boxes without headers for widget creation
+        let section_boxes: std::collections::HashMap<String, gtk::Box> = sections_map
+            .iter()
+            .map(|(k, (box_, _))| (k.clone(), box_.clone()))
+            .collect();
 
-        // Extract labels from the same builder instance
-        let labels = ui::Labels::from_builder(&builder);
+        // Load saved configs or use defaults
+        let configs = if let Ok(data) = fs::read_to_string("widget_layout.json") {
+            if let Ok(saved) = serde_json::from_str::<Vec<crate::widget::DataWidgetConfig>>(&data) {
+                saved
+            } else {
+                default_configs()
+            }
+        } else {
+            default_configs()
+        };
 
-        // Extract snow toggle switch
+        let root: gtk::Box = builder.object("root").unwrap();
         let snow_switch: gtk::Switch = builder.object("snow_switch").unwrap();
+        let detach_lock_switch: gtk::Switch = builder.object("detach_lock_switch").unwrap();
+        drop(builder);
 
-        let display = Display::default().expect("Could not connect to a display.");
-        let (snow_width, snow_height) = snowflake::SnowWindow::get_monitor_dimensions(&display);
+        // Separate headers for section-level detach
+        let section_headers: std::collections::HashMap<String, gtk::Label> = sections_map
+            .iter()
+            .map(|(k, (_, hdr))| (k.clone(), hdr.clone()))
+            .collect();
 
-        let snow_win = Rc::new(RefCell::new(snowflake::SnowWindow::new(
-            application,
-            snow_width,
-            snow_height,
-        )));
+        // Create widget registry
+        let registry = Rc::new(WidgetRegistry::new(configs, &section_boxes));
+        WidgetRegistry::init_self_ref(&registry);
+        registry.set_section_headers(section_headers);
+        registry.set_context(root.clone(), application.clone());
 
-        {
-            let snow_win_inner = snow_win.clone();
-            // React to the switch's own state changes — no GestureClick, no race.
-            snow_switch.connect_state_set(move |_switch, state| {
-                snow_win_inner.borrow_mut().set_snow_state(state);
-                Propagation::Proceed
+        let mut app_state = self.app.borrow_mut();
+        app_state.window = window;
+        app_state.registry = registry.clone();
+        drop(app_state);
+
+        Self {
+            snow_switch: Some(snow_switch),
+            detach_lock_switch: Some(detach_lock_switch),
+            registry: Some(registry),
+            ..self
+        }
+    }
+
+    pub fn bind_switches_and_restore(
+        self,
+        _application: &gtk::Application,
+        snow: Rc<RefCell<SnowWindow>>,
+    ) -> Self {
+        if let Some(ref switch) = self.detach_lock_switch {
+            let app_rc = self.app.clone();
+            let reg = self.registry.clone();
+            switch.connect_active_notify(move |sw| {
+                eprintln!("[DEBUG] detach_lock switch toggled to {}", sw.is_active());
+                app_rc.borrow_mut().detach_lock = sw.is_active();
+                if let Some(r) = &reg {
+                    r.set_lock(sw.is_active());
+                }
             });
         }
 
-        // Populate all fields at once
-        let mut inner = self.app.borrow_mut();
-        inner.window = window;
-        inner.labels = labels;
-        inner.backends = monitor::default_backends();
-        inner.snow_win = Some(snow_win);
-        drop(inner);
+        if let Some(ref switch) = self.snow_switch {
+            let snow_clone = snow.clone();
+            switch.connect_active_notify(move |sw| {
+                eprintln!("[DEBUG] snow switch toggled to {}", sw.is_active());
+                snow_clone.borrow_mut().set_snow_state(sw.is_active());
+            });
+        }
 
-        drop(builder); // Drop builder to release reference counting on widgets
+        // Set up widget detach gestures
+        if let Some(ref registry) = self.registry {
+            registry.setup_detach_gestures();
+        }
+
+        // Restore saved layout
+        if let Some(ref registry) = self.registry {
+            if let Ok(data) = fs::read_to_string("current_layout.json") {
+                if let Ok(parsed) = serde_json::from_str::<LayoutFile>(&data) {
+                    self.app.borrow_mut().detach_lock = parsed.detach_lock;
+                    if let Some(ref sw) = self.detach_lock_switch {
+                        sw.set_active(parsed.detach_lock);
+                    }
+                    if let Some(ref sw) = self.snow_switch {
+                        sw.set_active(parsed.snow);
+                    }
+                    if parsed.snow {
+                        snow.borrow_mut().show();
+                    }
+                    registry.restore_layout(&parsed.widgets);
+                }
+            }
+        }
+
         self
     }
 
-    /// Start the periodic update loop and finalize.
     pub fn schedule_ticks(self) -> Rc<RefCell<App>> {
         let app = self.app.clone();
-        // Clone window before closing over it — ApplicationWindow is RefCounted
-        let window = self.app.borrow().window.clone();
-        timeout_add_seconds_local(2, move || {
-            let output = tick::update(&mut app.borrow_mut());
-            tick::apply_labels(&app.borrow().labels, &output);
-
-            // Update input region after content changes so the overlay's clickable
-            // area matches its new size (content grows when labels populate).
-            glib::idle_add_local_once({
-                let window = window.clone();
-                move || {
-                    if let Some(surface) = window.surface() {
-                        let region = cairo::Region::create_rectangle(
-                            &cairo::RectangleInt::new(
-                                0,
-                                0,
-                                window.width(),
-                                window.height(),
-                            ),
-                        );
-                        surface.set_input_region(Some(&region));
-                    }
-                }
-            });
-
+        let id = timeout_add_local(std::time::Duration::from_secs(1), move || {
+            let mut a = app.borrow_mut();
+            a.monitor_state.refresh();
+            a.registry.update_all(&a.monitor_state);
             ControlFlow::Continue
         });
+        self.app.borrow_mut().tick_id = Some(id);
         self.app
+    }
+}
+
+pub fn save_layout(app: &App, snow_window: &SnowWindow) {
+    app.registry.pre_save_update_positions();
+    let widgets = app.registry.save_layout();
+    let layout = LayoutFile {
+        snow: snow_window.is_on(),
+        detach_lock: app.detach_lock,
+        widgets,
+    };
+    if let Ok(json) = serde_json::to_string_pretty(&layout) {
+        let _ = fs::write("current_layout.json", json);
     }
 }
